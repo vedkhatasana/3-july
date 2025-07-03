@@ -1,0 +1,89 @@
+// LoginScene.java
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.geometry.*;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+    public static Scene getLoginScene(Stage stage) {
+        Label title = new Label("Login Page");
+        title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        Label usernameLabel = new Label("Username:");
+        TextField usernameField = new TextField();
+
+        Label passwordLabel = new Label("Password:");
+        PasswordField passwordField = new PasswordField();
+
+        Button loginButton = new Button("Login");
+        Label errorLabel = new Label();
+
+        loginButton.setOnAction(e -> {
+            if (usernameField.getText().equals("admin") && passwordField.getText().equals("admin")) {
+                stage.setScene(CrudScene.getCrudScene(stage));
+            } else {
+                errorLabel.setText("Invalid credentials.");
+            }
+        });
+
+        VBox layout = new VBox(10, title, usernameLabel, usernameField, passwordLabel, passwordField, loginButton, errorLabel);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(20));
+
+        return new Scene(layout, 400, 300);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("JavaFX Application");
+        primaryStage.setScene(getLoginScene(primaryStage));
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+
+
+
+// CrudScene.java
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.geometry.*;
+import javafx.collections.*;
+import javafx.stage.Stage;
+
+public class CrudScene {
+    public static Scene getCrudScene(Stage stage) {
+        Label title = new Label("CRUD Operations");
+        title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("Name");
+
+        TextField emailField = new TextField();
+        emailField.setPromptText("Email");
+
+        Button addButton = new Button("Add");
+        Button updateButton = new Button("Update");
+        Button deleteButton = new Button("Delete");
+
+        TableView<String> table = new TableView<>();
+        TableColumn<String, String> col1 = new TableColumn<>("Name");
+        TableColumn<String, String> col2 = new TableColumn<>("Email");
+        table.getColumns().addAll(col1, col2);
+
+        HBox inputBox = new HBox(10, nameField, emailField, addButton, updateButton, deleteButton);
+        inputBox.setAlignment(Pos.CENTER);
+
+        VBox layout = new VBox(10, title, inputBox, table);
+        layout.setPadding(new Insets(20));
+        layout.setAlignment(Pos.CENTER);
+
+        return new Scene(layout, 600, 400);
+    }
+}
